@@ -2,18 +2,19 @@
 #define FILEPOOL_H
 
 #include <QString>
+#include <QStringList>
 #include <iostream>
 #include <QList>
 
-class FilePool
+class FilePool : public QStringList
 {
 public:
-    FilePool();
-    std::list<QString> GetListeFichiers(QString directory);
+    FilePool(){}
+    FilePool(const QString &folder);
 
 private:
-    void GetFiles(QString directory);
-    std::list<QString> _listeFichiers;
+
+    void findFileInFolderAndSubfolders(const QString &folder);
 };
 
 #endif // FILEPOOL_H

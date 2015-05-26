@@ -4,6 +4,7 @@
 #include "writer.h"
 #include "zipper.h"
 
+#include "qstringlist.h"
 
 EpsiFileCompressor::EpsiFileCompressor()
 {
@@ -15,14 +16,21 @@ void EpsiFileCompressor::uncompress(const QString &ecfFileName, const QString &f
 }
 void EpsiFileCompressor::compress(const QString &folder, const QString &ecfFileName)
 {
-    FilePool *filePoolManager = new FilePool();
+    QStringList *filePool = new FilePool(folder);
     ZippedBufferPool *zippedBufferPool = new ZippedBufferPool();
-    std::list<QString> listeFiles = filePoolManager->GetListeFichiers(folder);
-    for(std::list<QString>::iterator it = listeFiles.begin(); it != listeFiles.end(); it++)
+    //int count = 1;
+
+    //std::list<QString> listeFiles = filePoolManager->GetListeFichiers(folder);
+    for(QStringList::iterator it = filePool->begin(); it != filePool->end(); it++)
     {
         Zipper *zipper = new Zipper();
-        zippedBufferPool->put(zipper->GetZippedBuffer(*it));
+        zipper->CompressFile(*it);
+        //zippedBufferPool->put(zipper->GetZippedBuffer(*it));
+
+        std::cout << "compress :" << it->toStdString() << std::endl;
+        /*std::cout << count << std::endl;
+        count +=1;*/
     }
-    Writer *writer = new Writer(folder,*zippedBufferPool);
+    Writer *writer = new Writer(folder, ecfFileName, *zippedBufferPool);
     writer->writeCompressedFile();
 }

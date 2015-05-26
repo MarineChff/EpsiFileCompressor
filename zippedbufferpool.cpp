@@ -7,7 +7,7 @@ ZippedBufferPool::ZippedBufferPool()
 {
 }
 
-void ZippedBufferPool::put(ZippedBuffer &zb)
+void ZippedBufferPool::put(ZippedBuffer *zb)
 {
     _listZippedBuffer.insert(_listZippedBuffer.begin(),zb);
 }

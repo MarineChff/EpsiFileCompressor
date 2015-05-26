@@ -1,25 +1,21 @@
 #include "filepool.h"
 
-#include <QDirIterator>
-#include <QDebug>
+#include <QDir>
 
-FilePool::FilePool()
-{
+FilePool::FilePool(const QString &folder){
+    findFileInFolderAndSubfolders(folder);
 }
 
-void FilePool::GetFiles(QString directory)
-{
-    QDirIterator it(directory, QDirIterator::Subdirectories);
-    while (it.hasNext())
-    {
-        _listeFichiers.insert(_listeFichiers.begin(),it.filePath());
-        qDebug() << it.next();
+void FilePool::findFileInFolderAndSubfolders(const QString &folder){
+    QDir dir(folder);
+
+    foreach (const QFileInfo &entry,
+                 dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+        if(entry.isDir() == true){
+            findFileInFolderAndSubfolders(entry.filePath());
+        } else if (entry.isFile() == true){
+            append(entry.absoluteFilePath());
+        }
     }
-}
-
-std::list<QString> FilePool::GetListeFichiers(QString directory)
-{
-    GetFiles(directory);
-    return _listeFichiers;
 }
 

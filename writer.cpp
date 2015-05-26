@@ -8,29 +8,36 @@
 #include <QList>
 
 
-Writer::Writer(QString directory,ZippedBufferPool pool)
+Writer::Writer(QString directory, QString ecfFileName, ZippedBufferPool pool)
 {
     _poolZippedBuffer = pool;
-    _rootDirectory = directory;
     QStringList resultat = directory.split("\\");
     for(int i =0;i<resultat.size()-1;i++)
     {
-        _parentDirectory+= resultat[i];
+        _parentDirectory += resultat[i] + "\\";
     }
-    _rootDirectoryName =resultat[resultat.size()-1];
+    _ecfFileName = ecfFileName;
 }
 
 void Writer::writeCompressedFile()
 {
-    QFile file(_parentDirectory + "\\" + _rootDirectoryName + ".ecf");
+    QString chemin = _parentDirectory + "\\" + _ecfFileName + ".ecf";
+    QFile file(chemin);
+    file.open(QIODevice::Append);
+
+    std::cout << chemin.toStdString() << std::endl;
     QDataStream data(&file);
-    std::list<ZippedBuffer> listeZippedBuffer = _poolZippedBuffer._listZippedBuffer;
-    for(std::list<ZippedBuffer>::iterator it = listeZippedBuffer.begin(); it != listeZippedBuffer.end(); it++)
+
+    std::cout << "first" << data.status() << std::endl;
+
+    std::list<ZippedBuffer*> listeZippedBuffer = _poolZippedBuffer._listZippedBuffer;
+    for(std::list<ZippedBuffer*>::iterator it = listeZippedBuffer.begin(); it != listeZippedBuffer.end(); it++)
     {
-        ZippedBuffer zipBuffer = ((ZippedBuffer)*it);
-        data << zipBuffer._name;
-        data << zipBuffer._compressedFile;
+        ZippedBuffer *zippedBuffer = ((ZippedBuffer*) *it);
+        zippedBuffer->write(data);
     }
+
+    file.close();
 }
 
 void Writer::writeUnCompressedFiles(){

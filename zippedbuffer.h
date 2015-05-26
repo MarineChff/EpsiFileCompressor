@@ -1,20 +1,17 @@
 #ifndef ZIPPEDBUFFER_H
 #define ZIPPEDBUFFER_H
 
-#include <QString>
-#include <QByteArray>
-#include <QDataStream>
+#include "qdatastream.h"
 
 class ZippedBuffer
 {
 public:
-    ZippedBuffer();
     void write(QDataStream &stream);
     void read(QDataStream &stream);
+    ZippedBuffer();
 
     QString _name;
     QByteArray _compressedFile;
-
 };
 
 #endif // ZIPPEDBUFFER_H

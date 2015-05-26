@@ -7,7 +7,7 @@
 class Writer
 {
 public:
-    Writer(QString directory,ZippedBufferPool pool);
+    Writer(QString directory, QString ecfFileName, ZippedBufferPool pool);
     void writeCompressedFile();
     void writeUnCompressedFiles();
 
@@ -16,6 +16,7 @@ private:
     QString _parentDirectory;
     QString _rootDirectory;
     QString _rootDirectoryName;
+    QString _ecfFileName;
 };
 
 #endif // WRITER_H

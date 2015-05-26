@@ -1,17 +1,18 @@
 #include "zippedbuffer.h"
-#include <QDataStream>
+#include "qdatastream.h"
 
 ZippedBuffer::ZippedBuffer()
 {
-
 }
 
 void ZippedBuffer::write(QDataStream &stream)
 {
-
+   stream << _name;
+   stream << _compressedFile;
 }
 
 void ZippedBuffer::read(QDataStream &stream)
 {
 
 }
+

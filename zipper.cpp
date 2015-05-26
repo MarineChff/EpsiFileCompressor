@@ -12,20 +12,22 @@ Zipper::Zipper()
 {
 }
 
-ZippedBuffer Zipper::GetZippedBuffer(QString fileName)
+void Zipper::CompressFile(QString filePath)
 {
-    QFile file(fileName);
+    QFile file(filePath);
     file.open(QIODevice::ReadOnly);
-    QDataStream out(&file);
-    QByteArray buffer;
-    int count = 512;
-    char *temp = new char[count];
-    out.readRawData(temp, count);
-    buffer.append(temp, count);
-    delete [] temp;
-    buffer = qCompress(buffer);
-    ZippedBuffer *zipBuffer = new ZippedBuffer();
+    QByteArray ba = file.readAll();
+    file.close();
+
+    QStringList resultat = filePath.split("\\");
+    QString fileName = "";
+    fileName = resultat[resultat.size()-1];
+
+    ZippedBuffer* zipBuffer = new ZippedBuffer();
     zipBuffer->_name = fileName;
-    zipBuffer->_compressedFile = buffer;
-    return *zipBuffer;
+    zipBuffer->_compressedFile = ba;
+
+    _ZBP.put(zipBuffer);
+
+
 }

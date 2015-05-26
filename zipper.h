@@ -2,13 +2,16 @@
 #define ZIPPER_H
 
 #include "zippedbuffer.h"
+#include "zippedbufferpool.h"
 #include <QString>
 
 class Zipper
 {
 public:
     Zipper();
-    ZippedBuffer GetZippedBuffer(QString fileName);
+    void CompressFile(QString file);
+
+    ZippedBufferPool _ZBP;
 };
 
 #endif // ZIPPER_H
