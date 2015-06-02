@@ -8,8 +8,9 @@
 
 using namespace std;
 
-Zipper::Zipper()
+Zipper::Zipper(ZippedBufferPool* ZBP)
 {
+    _ZBP = ZBP;
 }
 
 void Zipper::CompressFile(QString filePath)
@@ -19,7 +20,7 @@ void Zipper::CompressFile(QString filePath)
     QByteArray ba = file.readAll();
     file.close();
 
-    QStringList resultat = filePath.split("\\");
+    QStringList resultat = filePath.split("/");
     QString fileName = "";
     fileName = resultat[resultat.size()-1];
 
@@ -27,7 +28,6 @@ void Zipper::CompressFile(QString filePath)
     zipBuffer->_name = fileName;
     zipBuffer->_compressedFile = ba;
 
-    _ZBP.put(zipBuffer);
-
+    _ZBP->put(zipBuffer);
 
 }

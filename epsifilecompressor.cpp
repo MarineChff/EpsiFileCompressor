@@ -18,19 +18,15 @@ void EpsiFileCompressor::compress(const QString &folder, const QString &ecfFileN
 {
     QStringList *filePool = new FilePool(folder);
     ZippedBufferPool *zippedBufferPool = new ZippedBufferPool();
-    //int count = 1;
 
-    //std::list<QString> listeFiles = filePoolManager->GetListeFichiers(folder);
     for(QStringList::iterator it = filePool->begin(); it != filePool->end(); it++)
     {
-        Zipper *zipper = new Zipper();
+        Zipper *zipper = new Zipper(zippedBufferPool);
         zipper->CompressFile(*it);
-        //zippedBufferPool->put(zipper->GetZippedBuffer(*it));
 
-        std::cout << "compress :" << it->toStdString() << std::endl;
-        /*std::cout << count << std::endl;
-        count +=1;*/
     }
+
+
     Writer *writer = new Writer(folder, ecfFileName, *zippedBufferPool);
     writer->writeCompressedFile();
 }

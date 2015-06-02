@@ -8,10 +8,10 @@
 class Zipper
 {
 public:
-    Zipper();
+    Zipper(ZippedBufferPool* ZBP);
     void CompressFile(QString file);
 
-    ZippedBufferPool _ZBP;
+    ZippedBufferPool* _ZBP;
 };
 
 #endif // ZIPPER_H

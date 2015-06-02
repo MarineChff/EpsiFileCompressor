@@ -6,6 +6,8 @@
 #include <QFile>
 #include <iostream>
 #include <QList>
+#include <QDataStream>
+
 
 
 Writer::Writer(QString directory, QString ecfFileName, ZippedBufferPool pool)
@@ -28,14 +30,21 @@ void Writer::writeCompressedFile()
     std::cout << chemin.toStdString() << std::endl;
     QDataStream data(&file);
 
-    std::cout << "first" << data.status() << std::endl;
-
     std::list<ZippedBuffer*> listeZippedBuffer = _poolZippedBuffer._listZippedBuffer;
+
+    int count = 0;
+
     for(std::list<ZippedBuffer*>::iterator it = listeZippedBuffer.begin(); it != listeZippedBuffer.end(); it++)
     {
         ZippedBuffer *zippedBuffer = ((ZippedBuffer*) *it);
-        zippedBuffer->write(data);
+        data << zippedBuffer->_name;
+        data << qCompress(zippedBuffer->_compressedFile);
+
+        std::cout << "compress : " << zippedBuffer->_name.toStdString() << std::endl;
+        count += 1 ;
     }
+
+    std::cout << "NB fichiers compressés : " << count << std::endl;
 
     file.close();
 }
