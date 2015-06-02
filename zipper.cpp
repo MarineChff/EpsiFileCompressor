@@ -26,7 +26,7 @@ void Zipper::CompressFile(QString filePath)
 
     ZippedBuffer* zipBuffer = new ZippedBuffer();
     zipBuffer->_name = fileName;
-    zipBuffer->_compressedFile = ba;
+    zipBuffer->_compressedFile = qCompress(ba);
 
     _ZBP->put(zipBuffer);
 

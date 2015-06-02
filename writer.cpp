@@ -37,8 +37,7 @@ void Writer::writeCompressedFile()
     for(std::list<ZippedBuffer*>::iterator it = listeZippedBuffer.begin(); it != listeZippedBuffer.end(); it++)
     {
         ZippedBuffer *zippedBuffer = ((ZippedBuffer*) *it);
-        data << zippedBuffer->_name;
-        data << qCompress(zippedBuffer->_compressedFile);
+        zippedBuffer->write(data);
 
         std::cout << "compress : " << zippedBuffer->_name.toStdString() << std::endl;
         count += 1 ;
@@ -49,6 +48,4 @@ void Writer::writeCompressedFile()
     file.close();
 }
 
-void Writer::writeUnCompressedFiles(){
 
-}

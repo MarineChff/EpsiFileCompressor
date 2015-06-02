@@ -7,12 +7,11 @@ ZippedBuffer::ZippedBuffer()
 
 void ZippedBuffer::write(QDataStream &stream)
 {
-   stream << _name;
-   stream << qCompress(_compressedFile);
+   stream << _name << _compressedFile;
 }
 
 void ZippedBuffer::read(QDataStream &stream)
 {
-
+    stream >> _name >> _compressedFile;
 }
 
