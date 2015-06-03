@@ -14,6 +14,7 @@
 Writer::Writer(QString directory, QString ecfFileName, ZippedBufferPool pool)
 {
     _poolZippedBuffer = pool;
+    _rootDirectory = directory;
     QStringList resultat = directory.split("\\");
     for(int i =0;i<resultat.size()-1;i++)
     {
@@ -52,7 +53,7 @@ void Writer::writeCompressedFile()
 void Writer::writeUnCompressedFiles()
 {
     _ecfFileName.remove(_ecfFileName.size() - 4, _ecfFileName.size());
-    QString chemin = _parentDirectory + "\\" + _ecfFileName;
+    QString chemin =  _rootDirectory;
 
 
 
