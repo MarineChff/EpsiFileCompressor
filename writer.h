@@ -17,6 +17,7 @@ private:
     QString _rootDirectory;
     QString _rootDirectoryName;
     QString _ecfFileName;
+    QString CreateDirectory(QString directoryParent,QString directoryToCreate);
 };
 
 #endif // WRITER_H

@@ -20,7 +20,7 @@ void EpsiFileCompressor::compress(const QString &folder, const QString &ecfFileN
 
     for(QStringList::iterator it = filePool->begin(); it != filePool->end(); it++)
     {
-        Zipper *zipper = new Zipper(zippedBufferPool);
+        Zipper *zipper = new Zipper(zippedBufferPool,folder);
         zipper->CompressFile(*it);
     }
 

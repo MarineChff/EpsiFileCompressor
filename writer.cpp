@@ -1,6 +1,6 @@
 #include "writer.h"
 #include "zippedbuffer.h"
-
+#include <QDir>
 #include <QString>
 #include <QStringList>
 #include <QFile>
@@ -40,7 +40,6 @@ void Writer::writeCompressedFile()
     {
         ZippedBuffer *zippedBuffer = ((ZippedBuffer*) *it);
         zippedBuffer->write(data);
-
         std::cout << "compress : " << zippedBuffer->_name.toStdString() << std::endl;
         count += 1 ;
     }
@@ -64,11 +63,24 @@ void Writer::writeUnCompressedFiles()
     for(std::list<ZippedBuffer*>::iterator it = listeZippedBuffer.begin(); it != listeZippedBuffer.end(); it++)
     {
         ZippedBuffer *zippedBuffer = ((ZippedBuffer*) *it);
+
+        int cptFileNameSplit  =zippedBuffer->_name.split("/").size();
+
+        if(cptFileNameSplit > 1)
+        {
+            QString directoryParent = zippedBuffer->_name;
+            QString stringPath = directoryParent;
+            QString directoryToCreate ="";
+            for(int i = 0;i<cptFileNameSplit-1;i++)
+            {
+                directoryToCreate += stringPath.split("/")[i];
+                directoryParent = CreateDirectory(chemin,directoryToCreate);
+                directoryToCreate += "/";
+            }
+        }
         QString cheminFile = chemin + "\\" + zippedBuffer->_name;
         QFile file(cheminFile);
         file.open(QFile::WriteOnly);
-
-        std::cout << cheminFile.toStdString() << std::endl;
 
         QDataStream data(&file);
 
@@ -77,13 +89,19 @@ void Writer::writeUnCompressedFiles()
 
         file.close();
 
-        std::cout << "uncompress : " << zippedBuffer->_name.toStdString() << std::endl;
+        //std::cout << "uncompress : " << zippedBuffer->_name.toStdString() << std::endl;
         count += 1 ;
 
     }
 
     std::cout << "NB fichiers décompressés : " << count << std::endl;
+}
 
-
-
+QString Writer::CreateDirectory(QString directoryParent,QString directoryToCreate)
+{
+    QString directoryPath = directoryParent+"/"+directoryToCreate;    
+    std::cout << "Directory to create : " << directoryPath.toStdString() << std::endl;
+    QDir dir = QDir::root();
+    dir.mkdir(directoryPath);
+    return directoryPath;
 }

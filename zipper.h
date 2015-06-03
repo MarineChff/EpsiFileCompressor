@@ -8,10 +8,11 @@
 class Zipper
 {
 public:
-    Zipper(ZippedBufferPool* ZBP);
+    Zipper(ZippedBufferPool* ZBP,QString rootDirectory);
     void CompressFile(QString file);
 
     ZippedBufferPool* _ZBP;
+    QString _RootDirectory;
 };
 
 #endif // ZIPPER_H
